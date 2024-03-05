@@ -1,4 +1,5 @@
 HELP.md
+licenceplaterecognition-416208-88ac5d18bf9e.json
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

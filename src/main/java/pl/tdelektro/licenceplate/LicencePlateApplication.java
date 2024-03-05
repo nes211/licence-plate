@@ -1,37 +1,18 @@
 package pl.tdelektro.licenceplate;
 
-import net.sourceforge.tess4j.ITesseract;
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import pl.tdelektro.licenceplate.service.DetectText;
 
-import java.io.File;
+import java.io.IOException;
 
 @SpringBootApplication
+@AllArgsConstructor
 public class LicencePlateApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		SpringApplication.run(LicencePlateApplication.class, args);
-
-
-		File imageFile = new File("src/main/resources/test4.jpg");
-		ITesseract instance = new Tesseract();
-		instance.setLanguage("pol");
-		instance.setDatapath("src/main/resources/");
-
-		try {
-			String result = instance.doOCR(imageFile);
-			System.out.println(result);
-		} catch (TesseractException ex) {
-			System.out.println(ex.getMessage());
-		}
-
-
-
-
-
-
 
 
 	}
