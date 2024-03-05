@@ -1,17 +1,16 @@
 package pl.tdelektro.licenceplate.service;
 
 import com.google.api.gax.core.FixedCredentialsProvider;
-import com.google.auth.oauth2.GoogleAuthUtils;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.vision.v1.*;
+import com.google.cloud.vision.v1.Feature.Type;
 import com.google.protobuf.ByteString;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import com.google.cloud.vision.v1.Feature.Type;
+
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -22,33 +21,39 @@ public class DetectText {
 
     public static List<String> detectText(String filePath) throws IOException {
 
-        List<AnnotateImageResponse> responses = makeRequest(Feature.Type.LABEL_DETECTION, filePath);
+        List<AnnotateImageResponse> responses = makeRequest(Type.OBJECT_LOCALIZATION, filePath);
         labelList = requestFilter(responses);
         return labelList;
     }
 
 
     public static List<String> requestFilter( List<AnnotateImageResponse> responses){
-
         for (AnnotateImageResponse res : responses) {
             if (res.hasError()) {
                 System.out.format("Error: %s%n", res.getError().getMessage());
-
             }
-
             // For full list of available annotations, see
-            for (EntityAnnotation annotation : res.getLabelAnnotationsList()) {
+            for (LocalizedObjectAnnotation annotation : res.getLocalizedObjectAnnotationsList()) {
+                if(annotation.getMid().equals("/m/01jfm_")){
 
-                if(annotation.getDescription().equals("Vehicle registration plate")){
-                    System.out.format("Text: %s%n", annotation.getDescription());
-                    labelList.add(annotation.getDescription());
+                    if( annotation.getScore() >0.8F) {
+                        System.out.format("Label: %s%n", annotation.getBoundingPoly());
+                        labelList.add(annotation.getBoundingPoly().getNormalizedVerticesList().toString());
+                        //labelList.add(annotation.getBoundingPoly().toString());
+                    }else{
+                        return labelList = Arrays.asList("No licence plate recognised");
+                    }
 
                 }
-
-
             }
-        }
 
+//            for (EntityAnnotation textAnnotation : res.getTextAnnotationsList()) {
+//                if(textAnnotation.getDescription()!=null){
+//                    System.out.format("Text: %s%n", textAnnotation.getDescription());
+//                    labelList.add(textAnnotation.getDescription());
+//                }
+//            }
+        }
        return labelList;
     }
 
@@ -68,7 +73,6 @@ public class DetectText {
                 .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
                 .build());
 
-        //ImageContext context = ImageContext.newBuilder().build();
         AnnotateImageRequest request =
                 AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
         requests.add(request);
