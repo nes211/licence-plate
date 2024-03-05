@@ -17,7 +17,7 @@ public class FileController {
     @GetMapping("/detect-text")
     public List<String> detectText() {
         try {
-            return detectText.detectText("src/main/resources/test5.jpg");
+            return detectText.detectText("src/main/resources/test6.jpg");
         } catch (IOException e) {
             e.printStackTrace();
             return Arrays.asList("Error occurred during text detection: " + e.getMessage());

@@ -23,7 +23,7 @@ public class DetectText {
 
         List<AnnotateImageResponse> responses = makeRequest(Type.OBJECT_LOCALIZATION, filePath);
         labelList = requestFilter(responses);
-        return labelList;
+        return labelList.isEmpty() ? labelList = Arrays.asList("No licence plate recognised") :labelList;
     }
 
 
@@ -39,7 +39,6 @@ public class DetectText {
                     if( annotation.getScore() >0.8F) {
                         System.out.format("Label: %s%n", annotation.getBoundingPoly());
                         labelList.add(annotation.getBoundingPoly().getNormalizedVerticesList().toString());
-                        //labelList.add(annotation.getBoundingPoly().toString());
                     }else{
                         return labelList = Arrays.asList("No licence plate recognised");
                     }
