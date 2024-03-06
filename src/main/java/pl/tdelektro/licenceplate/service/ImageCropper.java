@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class ImageCropper {
 
 
-    public static String croppImage(String imagePath, String vertices){
+    public static String croppImage(String imagePath, String vertices) {
 
         try {
             // Read the image

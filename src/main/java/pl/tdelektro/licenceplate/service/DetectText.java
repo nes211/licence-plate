@@ -6,7 +6,6 @@ import com.google.cloud.vision.v1.*;
 import com.google.cloud.vision.v1.Feature.Type;
 import com.google.protobuf.ByteString;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
