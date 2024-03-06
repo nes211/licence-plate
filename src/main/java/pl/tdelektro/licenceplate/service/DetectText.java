@@ -23,29 +23,31 @@ public class DetectText {
     public static List<String> labelList = new ArrayList<>();
     public static List<String> labelToDisplay = new ArrayList<>();
     public static List<AnnotateImageRequest> requests = new ArrayList<>();
+
     public List<String> detectText(String filePath) throws IOException {
 
-
+        //First request for retrieve localization of registration plate
         List<AnnotateImageResponse> responses = makeRequest(Type.OBJECT_LOCALIZATION, filePath, "");
         labelList = requestFilter(responses);
 
-
-        if(labelList.get(0)!="No licence plate recognised") {
+        //If registration plate is recognised make request with cropped area
+        if (labelList.get(0) != "No licence plate recognised") {
             List<AnnotateImageResponse> responsesWithBindingCords = makeRequest(
                     Type.TEXT_DETECTION,
                     filePath,
-                    labelList.get(2)
+                    labelList.get(0)
             );
             labelList = requestFilter(responsesWithBindingCords);
         }
 
 
-        if (labelList.size()>1) {
+        //Data for response
+        if (labelList.size() > 1) {
             labelToDisplay.add(labelList.get(1));
-            labelToDisplay.add(labelList.get(6).replace("\n", " "));
+            labelToDisplay.add(labelList.get(2).replace("\n", " "));
         }
 
-        return labelList.size()==1 ? labelList : labelToDisplay;
+        return labelList.size() == 1 ? labelList : labelToDisplay;
     }
 
 
@@ -62,15 +64,17 @@ public class DetectText {
 
                     if (annotation.getScore() > 0.5F) {
                         System.out.format("Label: %s%n", annotation.getBoundingPoly());
-                        labelList.add(annotation.getMid());
-                        labelList.add(annotation.getName());
-                        labelList.add(annotation.getBoundingPoly().getNormalizedVerticesList().toString());
+                        if (labelList.isEmpty()) {
+                            labelList.add(annotation.getBoundingPoly().getNormalizedVerticesList().toString());
+                            labelList.add(annotation.getName());
+                        }
+                    } else {
+                        return labelList = Arrays.asList("No licence plate recognised");
                     }
-
                 }
             }
 
-            if(labelList.isEmpty()){
+            if (labelList.isEmpty()) {
                 return labelList = Arrays.asList("No licence plate recognised");
             }
 
