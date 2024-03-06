@@ -23,6 +23,7 @@ public class DetectText {
     static ImageCropper imageCropper;
 
     public static List<String> labelList = new ArrayList<>();
+    public static List<String> labelToDisplay = new ArrayList<>();
     public static List<AnnotateImageRequest> requests = new ArrayList<>();
 
     public List<String> detectText(String filePath) throws IOException {
@@ -38,8 +39,12 @@ public class DetectText {
 
         labelList = requestFilter(responsesWithBindingCords);
 
+        if(!labelList.isEmpty()) {
+            labelToDisplay.add(labelList.get(1));
+            labelToDisplay.add(labelList.get(6).replace("\n", " "));
+        }
 
-        return labelList.isEmpty() ? labelList = Arrays.asList("No licence plate recognised") : labelList;
+        return labelList.isEmpty() ? labelList = Arrays.asList("No licence plate recognised") : labelToDisplay;
     }
 
 
