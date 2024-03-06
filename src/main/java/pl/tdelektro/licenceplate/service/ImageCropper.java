@@ -34,23 +34,8 @@ public class ImageCropper {
                 yCoordinates.add(Float.parseFloat(matcher.group(2)));
             }
 
-            // Find the minimum and maximum coordinates
-            float minX = Float.MAX_VALUE;
-            float minY = Float.MAX_VALUE;
-            float maxX = Float.MIN_VALUE;
-            float maxY = Float.MIN_VALUE;
-            for (float x : xCoordinates) {
-                minX = Math.min(minX, x);
-                maxX = Math.max(maxX, x);
-            }
-            for (float y : yCoordinates) {
-                minY = Math.min(minY, y);
-                maxY = Math.max(maxY, y);
-            }
-
-            // Define the cropping rectangle
-            Rectangle croppingRect = new Rectangle((int) (minX * image.getWidth()), (int) (minY * image.getHeight()),
-                    (int) ((maxX - minX) * image.getWidth()), (int) ((maxY - minY) * image.getHeight()));
+            // Set the minimum and maximum coordinates
+            Rectangle croppingRect = getRectangle(xCoordinates, yCoordinates, image);
 
             // Create a BufferedImage for the cropped image
             BufferedImage croppedImage = new BufferedImage(croppingRect.width, croppingRect.height, BufferedImage.TYPE_INT_RGB);
@@ -68,6 +53,26 @@ public class ImageCropper {
         }
 
         return "src/main/resources/cropped_image.jpg";
+    }
+
+    private static Rectangle getRectangle(List<Float> xCoordinates, List<Float> yCoordinates, BufferedImage image) {
+        float minX = Float.MAX_VALUE;
+        float minY = Float.MAX_VALUE;
+        float maxX = Float.MIN_VALUE;
+        float maxY = Float.MIN_VALUE;
+        for (float x : xCoordinates) {
+            minX = Math.min(minX, x);
+            maxX = Math.max(maxX, x);
+        }
+        for (float y : yCoordinates) {
+            minY = Math.min(minY, y);
+            maxY = Math.max(maxY, y);
+        }
+
+        // Define the cropping rectangle
+        Rectangle croppingRect = new Rectangle((int) (minX * image.getWidth()), (int) (minY * image.getHeight()),
+                (int) ((maxX - minX) * image.getWidth()), (int) ((maxY - minY) * image.getHeight()));
+        return croppingRect;
     }
 
 }
