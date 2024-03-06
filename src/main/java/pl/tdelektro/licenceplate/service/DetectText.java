@@ -20,30 +20,32 @@ public class DetectText {
 
 
     static ImageCropper imageCropper;
-
     public static List<String> labelList = new ArrayList<>();
     public static List<String> labelToDisplay = new ArrayList<>();
     public static List<AnnotateImageRequest> requests = new ArrayList<>();
-
     public List<String> detectText(String filePath) throws IOException {
+
 
         List<AnnotateImageResponse> responses = makeRequest(Type.OBJECT_LOCALIZATION, filePath, "");
         labelList = requestFilter(responses);
 
-        List<AnnotateImageResponse> responsesWithBindingCords = makeRequest(
-                Type.TEXT_DETECTION,
-                filePath,
-                labelList.get(2)
-        );
 
-        labelList = requestFilter(responsesWithBindingCords);
+        if(labelList.get(0)!="No licence plate recognised") {
+            List<AnnotateImageResponse> responsesWithBindingCords = makeRequest(
+                    Type.TEXT_DETECTION,
+                    filePath,
+                    labelList.get(2)
+            );
+            labelList = requestFilter(responsesWithBindingCords);
+        }
 
-        if(!labelList.isEmpty()) {
+
+        if (labelList.size()>1) {
             labelToDisplay.add(labelList.get(1));
             labelToDisplay.add(labelList.get(6).replace("\n", " "));
         }
 
-        return labelList.isEmpty() ? labelList = Arrays.asList("No licence plate recognised") : labelToDisplay;
+        return labelList.size()==1 ? labelList : labelToDisplay;
     }
 
 
@@ -54,22 +56,23 @@ public class DetectText {
             if (res.hasError()) {
                 System.out.format("Error: %s%n", res.getError().getMessage());
             }
-            // For full list of available annotations, see
+
             for (LocalizedObjectAnnotation annotation : res.getLocalizedObjectAnnotationsList()) {
                 if (annotation.getMid().equals("/m/01jfm_")) {
 
-                    if (annotation.getScore() > 0.8F) {
+                    if (annotation.getScore() > 0.5F) {
                         System.out.format("Label: %s%n", annotation.getBoundingPoly());
                         labelList.add(annotation.getMid());
                         labelList.add(annotation.getName());
                         labelList.add(annotation.getBoundingPoly().getNormalizedVerticesList().toString());
-                    } else {
-                        return labelList = Arrays.asList("No licence plate recognised");
                     }
 
                 }
             }
 
+            if(labelList.isEmpty()){
+                return labelList = Arrays.asList("No licence plate recognised");
+            }
 
             for (EntityAnnotation textAnnotation : res.getTextAnnotationsList()) {
                 if (textAnnotation.getDescription() != null) {
@@ -85,7 +88,7 @@ public class DetectText {
     public static List<AnnotateImageResponse> makeRequest(Type featureType, String filePath, String vertices) throws IOException {
 
         //For cropped image filePath dir to new cropped file by BingingPoly vertices
-        if (featureType.equals(Type.TEXT_DETECTION) ) {
+        if (featureType.equals(Type.TEXT_DETECTION)) {
             filePath = imageCropper.croppImage(filePath, vertices);
         }
 
