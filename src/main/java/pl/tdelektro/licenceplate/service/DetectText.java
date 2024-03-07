@@ -67,6 +67,7 @@ public class DetectText {
                 System.out.format("Error: %s%n", res.getError().getMessage());
             }
 
+            //Processing first request with object detection for retrieve localization of licence plate
             for (LocalizedObjectAnnotation annotation : res.getLocalizedObjectAnnotationsList()) {
                 if (annotation.getMid().equals("/m/01jfm_")) {
 
@@ -86,6 +87,7 @@ public class DetectText {
                 return labelList = Arrays.asList("No licence plate recognised");
             }
 
+            //Processing second request for retrieve text from cropped image
             for (EntityAnnotation textAnnotation : res.getTextAnnotationsList()) {
                 if (textAnnotation.getDescription() != null) {
                     labelList.add(textAnnotation.getDescription());
@@ -97,16 +99,21 @@ public class DetectText {
     }
 
 
+
     public static List<AnnotateImageResponse> makeRequest(Type featureType, String filePath, String vertices) throws IOException {
 
-        //For cropped image filePath dir to new cropped file by BingingPoly vertices
+        //Second request, only for cropped image
+        //New image filePath redirect to new cropped file
+        //processed by BindingPoly vertices
         if (featureType.equals(Type.TEXT_DETECTION)) {
             filePath = imageCropper.croppImage(filePath, vertices);
         }
 
-        ByteString imgBytes = ByteString.readFrom(new FileInputStream(filePath));
 
+        //Define request params
+        ByteString imgBytes = ByteString.readFrom(new FileInputStream(filePath));
         Image img = Image.newBuilder().setContent(imgBytes).build();
+
         Feature feat = Feature.newBuilder().setType(featureType).build();
 
         String credentialsPath = "src/main/resources/licenceplaterecognition-416208-88ac5d18bf9e.json";

@@ -18,6 +18,7 @@ public class ImageCropper {
 
     public static String croppImage(String imagePath, String vertices) {
 
+        //Code for crop image ChatGPT
         try {
             // Read the image
             BufferedImage image = ImageIO.read(new File(imagePath));
@@ -55,6 +56,8 @@ public class ImageCropper {
         return "src/main/resources/cropped_image.jpg";
     }
 
+
+    //Rectangle dimensions assign with BindingPoly coordinates
     private static Rectangle getRectangle(List<Float> xCoordinates, List<Float> yCoordinates, BufferedImage image) {
         float minX = Float.MAX_VALUE;
         float minY = Float.MAX_VALUE;
