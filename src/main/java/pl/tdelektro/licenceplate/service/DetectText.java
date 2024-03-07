@@ -49,7 +49,7 @@ public class DetectText {
         }
 
 
-        //Data for response
+        //Retrieve data from labelList for complete response
         if (labelList.size() > 1) {
             labelToDisplay.add(labelList.get(1));
             labelToDisplay.add(labelList.get(2).replace("\n", " "));
@@ -61,6 +61,7 @@ public class DetectText {
 
     public static List<String> requestFilter(List<AnnotateImageResponse> responses) {
 
+        //Error response from Vision API
         responses.get(0).getFullTextAnnotation();
         for (AnnotateImageResponse res : responses) {
             if (res.hasError()) {
@@ -69,6 +70,8 @@ public class DetectText {
 
             //Processing first request with object detection for retrieve localization of licence plate
             for (LocalizedObjectAnnotation annotation : res.getLocalizedObjectAnnotationsList()) {
+
+                //Licence plate string detection
                 if (annotation.getMid().equals("/m/01jfm_")) {
 
                     if (annotation.getScore() > 0.5F) {
@@ -87,7 +90,7 @@ public class DetectText {
                 return labelList = Arrays.asList("No licence plate recognised");
             }
 
-            //Processing second request for retrieve text from cropped image
+            //Processing second request for retrieve text detection from cropped image
             for (EntityAnnotation textAnnotation : res.getTextAnnotationsList()) {
                 if (textAnnotation.getDescription() != null) {
                     labelList.add(textAnnotation.getDescription());
@@ -136,6 +139,7 @@ public class DetectText {
                         .build();
         requests.add(request);
 
+        //Send and retrieve response
         BatchAnnotateImagesResponse response = client.batchAnnotateImages(requests);
         List<AnnotateImageResponse> responses = response.getResponsesList();
 
