@@ -5,21 +5,14 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.vision.v1.*;
 import com.google.cloud.vision.v1.Feature.Type;
 import com.google.protobuf.ByteString;
-import com.google.type.DateTime;
 import lombok.AllArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @AllArgsConstructor
@@ -100,7 +93,6 @@ public class DetectText {
 
         return labelList;
     }
-
 
 
     public static List<AnnotateImageResponse> makeRequest(Type featureType, String filePath, String vertices) throws IOException {
