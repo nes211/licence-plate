@@ -54,7 +54,7 @@ For a photo, such as one taken by a dashboard camera, it is possible to recogniz
     Interacting with the API:
         Place file to recogise licence plate in src/main/resources.
         Add file into application TextController class path.
-        Use html end-point [http](http://localhost:8080/detect-text) to retriev licence plate text.
+        Use html end-point http://localhost:8080/detect-text to retriev licence plate text.
 </div>
 
 ## 7. Deployment
@@ -76,21 +76,18 @@ Issue: The application fails to start, and an error message is displayed.
 Solution:
 <div class="wrap-text">
     Check if all required dependencies are installed and configured correctly.
-    Verify that the database connection settings in application.properties are accurate.
     Review the application logs for detailed error messages to pinpoint the issue.
 </div>
  
  ### 2. Unable to Authenticate
 
-Issue: Users are unable to authenticate and receive errors when attempting to log in.
+Issue: Application are unable to authenticate and receive errors when attempting to log in.
 
 Solution:
 
-    Ensure that the user is registered.
-    Ensure that the provided credentials are correct.
-    Check the user roles and permissions to ensure proper access control.
-
-
+    Ensure that the user has Google Cloud API valid key.
+    Ensure that the provided credentials are correct (file and file path).
+    Ensure thar you have sufficient funds in the Google Vision application account.
     
 ## 10. Future Improvements
 <div class="wrap-text">
