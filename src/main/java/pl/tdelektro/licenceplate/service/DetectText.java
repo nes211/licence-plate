@@ -29,11 +29,6 @@ public class DetectText {
 
     public List<String> detectText(String filePath) throws IOException {
 
-
-
-
-
-
         //First request for retrieve localization of registration plate
         List<AnnotateImageResponse> responses = makeRequest(Type.OBJECT_LOCALIZATION, filePath, "");
         labelList = requestFilter(responses);
