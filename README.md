@@ -18,25 +18,18 @@ An application for license plate recognition utilizing Google Cloud Vision. The 
 
 ### Configuration
 <div class="wrap-text">
-    Place your Google Cloud API key file into the resources folder
-    Modify API key JSON file name in email.properties for access your service.
+    Place your Google Cloud API key file into the resources folder.
+    <br> Modify API key JSON file name in application.properties for access your service.
 
 
-<img alt="Email configuration" src="https://github.com/nes211/Workshop/blob/d7a3ef891ca3bd68eac09655cc065a444c3946ad/img/email_config.jpg">
+<img alt="Application API Key path" src="https://github.com/nes211/licence-plate/blob/85a864c9f2f27a677eb8a3a34aaf84c7ae79cbfb/img/application_config.jpg">
     
 </div>
 
 ## 3. Features
 
 <div class="wrap-text">
-    User Authentication and Authorization: Users can log in and add new user securely with new credentials. 
-    Admin can assign user with car in workshop. Basic authorization is implemented to ensure proper access 
-    control.
-    Repair status: The administrator adds a car to the database and automatically creates the first task 
-    basic inspection. Subsequently, additional repairs are added according to the owner's suggestions 
-    or faults detected during the inspection
-    Repair Status Check: Users can query the repair status of vehicles by providing his credentials.
-    Email Notifications: Email notifications are sent to users upon repair completion.
+For a photo, such as one taken by a dashboard camera, it is possible to recognize a license plate. If there are multiple license plates present, the first one with the highest probability of being correctly recognized is selected. If there are no license plates detected in the image, an information message is displayed.
 </div>
 
 ## 4. Technologies Used
