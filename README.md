@@ -3,7 +3,7 @@
 ## 1. Introduction
 <div class="wrap-text">
 An application for license plate recognition utilizing Google Cloud Vision. The recognition process involves two stages. Initially, the captured image is processed to determine the presence of a license plate. If the probability of detecting a license plate exceeds 50%, the second stage of verification is initiated. Based on the obtained coordinates, the image is cropped. In the second stage, the cropped image is sent for text recognition from the license plate. The result is presented as JSON in the REST application endpoint.
-<img alt="Licence plate recognition" src="https://github.com/nes211/Workshop/blob/b67b8e2e3a346e1f5e18e7900d6f40b298b23aa2/img/workshop_diagram.jpg">
+<img alt="Licence plate recognition" src="https://github.com/nes211/licence-plate/blob/8a44db7ca07753ade3daedd16c0da5c93fa7d23d/img/licence_plate_diagram.jpg">
 
 </div>
 
@@ -18,7 +18,8 @@ An application for license plate recognition utilizing Google Cloud Vision. The 
 
 ### Configuration
 <div class="wrap-text">
-    Modify email configurations in email.properties for access your service.
+    Place your Google Cloud API key file into the resources folder
+    Modify API key JSON file name in email.properties for access your service.
 
 
 <img alt="Email configuration" src="https://github.com/nes211/Workshop/blob/d7a3ef891ca3bd68eac09655cc065a444c3946ad/img/email_config.jpg">
