@@ -6,6 +6,7 @@ import com.google.cloud.vision.v1.*;
 import com.google.cloud.vision.v1.Feature.Type;
 import com.google.protobuf.ByteString;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
@@ -20,12 +21,18 @@ public class DetectText {
 
 
     static ImageCropper imageCropper;
+    public static String googleApiKeyPath;
     public static List<String> labelList = new ArrayList<>();
     public static List<String> labelToDisplay = new ArrayList<>();
     public static List<AnnotateImageRequest> requests = new ArrayList<>();
 
 
     public List<String> detectText(String filePath) throws IOException {
+
+
+
+
+
 
         //First request for retrieve localization of registration plate
         List<AnnotateImageResponse> responses = makeRequest(Type.OBJECT_LOCALIZATION, filePath, "");
@@ -41,7 +48,6 @@ public class DetectText {
             labelList = requestFilter(responsesWithBindingCords);
         }
 
-
         //Retrieve data from labelList for complete response
         if (labelList.size() > 1) {
             labelToDisplay.add(labelList.get(1));
@@ -50,7 +56,10 @@ public class DetectText {
 
         return labelList.size() == 1 ? labelList : labelToDisplay;
     }
-
+    @Value("${Google.cloud.api.key.path}")
+    public void setGoogleApiKeyPath(String apiKeyPath) {
+        DetectText.googleApiKeyPath = apiKeyPath;
+    }
 
     public static List<String> requestFilter(List<AnnotateImageResponse> responses) {
 
@@ -90,7 +99,6 @@ public class DetectText {
                 }
             }
         }
-
         return labelList;
     }
 
@@ -111,8 +119,7 @@ public class DetectText {
 
         Feature feat = Feature.newBuilder().setType(featureType).build();
 
-        String credentialsPath = "src/main/resources/licenceplaterecognition-416208-88ac5d18bf9e.json";
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(credentialsPath));
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream(googleApiKeyPath));
 
         ImageContext context = ImageContext.newBuilder()
                 .addLanguageHints("pl")
