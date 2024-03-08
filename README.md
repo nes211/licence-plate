@@ -57,17 +57,17 @@ For a photo, such as one taken by a dashboard camera, it is possible to recogniz
         Use html end-point [http](http://localhost:8080/detect-text) to retriev licence plate text.
 </div>
 
-## 10. Deployment
+## 7. Deployment
 
     Deploy the application to your preferred environment (local, cloud, etc.).
     Ensure proper configuration for the deployment environment.
 
-## 11. Some problems during project
+## 8. Some problems during project
 <div class="wrap-text">
- 
+During the implementation of the Vision application, to reduce the number of queries and transmitted data, it was planned to send a single request. Within this request, the object type was intended to be transmitted, and the license plate number was to be read from the identified object. However, during the implementation, it was discovered that the model does not provide both functionalities in a single step. Therefore, two requests are executed: the first one to recognize the area with the license plate, and the second one with the cropped image to recognize the text from the license plate. 
 </div>
 
-## 12. Troubleshooting
+## 9. Troubleshooting
 
   ### 1. Application Fails to Start
 
@@ -90,39 +90,19 @@ Solution:
     Ensure that the provided credentials are correct.
     Check the user roles and permissions to ensure proper access control.
 
-  ### 3. Email Notifications Not Sending
 
-Issue: Email notifications are not being sent to users upon repair completion.
-
-Solution:
-<div class="wrap-text">
-    Verify that the email service configuration in email.properties is correct, including the SMTP server settings.
-    Check if the email address provided for notifications is valid and accessible.
-    Review the application logs for any errors related to the email service.
-</div>
-
-### 4. Database Connection Issues
-
-Issue: The application encounters errors related to database connectivity.
-
-Solution:
-<div class="wrap-text">
-    Check if the database server is running and accessible. H2 server is running all the time with application.
-    Verify that the database credentials and connection settings in application.properties are accurate.
-    Test the connection manually using a database client or command-line tool.
-</div>
     
-## 13. Future Improvements
+## 10. Future Improvements
 <div class="wrap-text">
-    Roadmap for future development includes adding additional features such as user management page.
+    Roadmap for future development includes adding one step registration plate recognition as user management page.
     Feature requests and suggestions are encouraged.
 </div>
 
-## 14. License
+## 11. License
 
     This project is licensed under the MIT License.
 
-## 15. Contact
+## 12. Contact
 
     For support or inquiries, contact the project maintainers at nes211nes211nes@gmail.com.
-    Project repository: https://github.com/nes211/Workshop
+    Project repository: https://github.com/nes211/licence-plate
